@@ -41,3 +41,18 @@ GET http://localhost:3000/api/v1/accounts/3
 
 
 
+### Create Transaction
+POST http://localhost:3000/api/v1/transactions
+Content-Type: application/json
+
+{
+    "amount":10000,
+    "source_account_id":4,
+    "source_destination_id":5
+}
+
+### Get all Transaction
+GET http://localhost:3000/api/v1/transactions
+
+### Get Transaction by ID
+GET http://localhost:3000/api/v1/transactions/7

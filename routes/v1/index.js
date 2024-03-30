@@ -10,6 +10,9 @@ router.post("/accounts", accountController.register);
 router.get("/accounts", accountController.index);
 router.get("/accounts/:id", accountController.show);
 
-// const transactionController = require("../../controllers/v1/transactionController.js");
+const transactionController = require("../../controllers/v1/transactionControllers.js");
+router.post("/transactions", transactionController.store);
+router.get("/transactions", transactionController.index);
+router.get("/transactions/:id", transactionController.show);
 
 module.exports = router;
