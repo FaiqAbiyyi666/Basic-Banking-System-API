@@ -2,61 +2,49 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 module.exports = {
-  // Untuk menambahkan user
   register: async (req, res, next) => {
     try {
-      let { name, email, password, identity_type, identity_number, address } =
-        req.body;
+      let { bank_name, bank_account_number, balance, user_id } = req.body;
 
-      let exist = await prisma.user.findFirst({
-        where: { email },
+      let exist = await prisma.bankAccount.findFirst({
+        where: { bank_account_number },
       });
 
       if (exist) {
         return res.status(400).json({
           status: false,
-          message: "Email already used!",
+          message: "Bank Account Number already used!",
         });
       }
 
-      let user = await prisma.user.create({
+      let bankAccount = await prisma.bankAccount.create({
         data: {
-          name,
-          email,
-          password,
-          profile: {
-            create: { identity_type, identity_number, address },
-          },
-        },
-        // untuk menampilkan name dan age di json
-        include: {
-          profile: true,
+          bank_name,
+          bank_account_number,
+          balance,
+          user_id,
         },
       });
 
       res.status(201).json({
         status: true,
         message: "OK",
-        data: user,
+        data: bankAccount,
       });
     } catch (err) {
       next(err);
     }
   },
 
-  // Untuk menampilkan semua user
+  // Untuk menampilkan semua data account
   index: async (req, res, next) => {
     try {
-      let users = await prisma.user.findMany({
-        include: {
-          profile: true,
-        },
-      });
+      let accounts = await prisma.bankAccount.findMany();
 
       res.status(200).json({
         status: true,
         message: "OK",
-        data: users,
+        data: accounts,
       });
     } catch (err) {
       next(err);
@@ -68,15 +56,14 @@ module.exports = {
     try {
       let id = Number(req.params.id);
 
-      let user = await prisma.user.findUnique({
+      let account = await prisma.bankAccount.findUnique({
         where: { id },
-        include: { profile: true },
       });
 
-      if (!user) {
+      if (!account) {
         return res.status(400).json({
           status: false,
-          message: "Can't find user with id " + id,
+          message: "Can't find account with id " + id,
           data: null,
         });
       }
@@ -84,7 +71,7 @@ module.exports = {
       res.status(200).json({
         status: true,
         message: "OK",
-        data: user,
+        data: account,
       });
     } catch (err) {
       next(err);

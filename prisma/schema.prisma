@@ -12,3 +12,49 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String
+  password     String
+  bank_account BankAccount[]
+  profile      Profile?
+
+  @@map("users")
+}
+
+model BankAccount {
+  id                      Int           @id @default(autoincrement())
+  bank_name               String
+  bank_account_number     String
+  balance                 Int
+  User                    User?         @relation(fields: [user_id], references: [id])
+  user_id                 Int?
+  source_transaction      Transaction[] @relation("source_transaction")
+  destination_transaction Transaction[] @relation("destination_transaction")
+
+  @@map("bank_accounts")
+}
+
+model Profile {
+  id              Int    @id @default(autoincrement())
+  identity_type   String
+  identity_number String
+  address         String
+  user            User   @relation(fields: [user_id], references: [id])
+  user_id         Int    @unique
+
+  @@map("profiles")
+}
+
+model Transaction {
+  id                    Int         @id @default(autoincrement())
+  amount                Int
+  source_account        BankAccount @relation("source_transaction", fields: [source_account_id], references: [id])
+  source_account_id     Int
+  source_destination    BankAccount @relation("destination_transaction", fields: [source_destination_id], references: [id])
+  source_destination_id Int
+
+  @@map("transactions")
+}

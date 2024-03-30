@@ -1,0 +1,43 @@
+### Create User and Profile
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+    "name":"kepin",
+    "email":"kepin@gmail.com",
+    "password":"123456",
+    "identity_type":"KTP", 
+    "identity_number":"000111222333", 
+    "address":"Surabaya"
+}
+
+### Get all User 
+GET http://localhost:3000/api/v1/users
+
+### Get User by ID 
+GET http://localhost:3000/api/v1/users/4
+
+
+
+
+
+### Create Account
+POST http://localhost:3000/api/v1/accounts
+Content-Type: application/json
+
+{
+    "bank_name":"BCA",
+    "bank_account_number":"155000555",
+    "balance":120000,
+    "user_id":5
+}
+
+### Get all Account
+GET http://localhost:3000/api/v1/accounts
+
+### Get Account by ID
+GET http://localhost:3000/api/v1/accounts/3
+
+
+
+
