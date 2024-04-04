@@ -1,4 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
+const { query } = require("express");
 const prisma = new PrismaClient();
 
 module.exports = {
@@ -11,11 +12,14 @@ module.exports = {
       let exist = await prisma.user.findFirst({
         where: { email },
       });
+      let exist_iNumber = await prisma.profile.findFirst({
+        where: { identity_number },
+      });
 
-      if (exist) {
+      if (exist && exist_iNumber) {
         return res.status(400).json({
           status: false,
-          message: "Email already used!",
+          message: "Email and Identity Number already used!",
         });
       }
 
@@ -47,7 +51,13 @@ module.exports = {
   // Untuk menampilkan semua user
   index: async (req, res, next) => {
     try {
+      // /users?search=bagus
+      let { search } = req.query;
+
       let users = await prisma.user.findMany({
+        where: {
+          name: { contains: search },
+        },
         include: {
           profile: true,
         },

@@ -9,6 +9,11 @@ servers:
   - url: http://localhost:3000/api/v1
 paths:
   /users:
+    parameters:
+        - schema:
+            type: string
+          name: search
+          in: query
     post:
       summary: Register new user 
       description: Mendaftarkan user baru ke dalam database
@@ -27,6 +32,15 @@ paths:
                 password:
                   type: string
                   example: 123456
+                identity_type:
+                  type: string
+                  example: ktp
+                identity_number:
+                  type: string
+                  example: 111222000333
+                address:
+                  type: string
+                  example: Sidoarjo 
       responses:
         201:
           description: Success
@@ -56,6 +70,24 @@ paths:
                       password: 
                         type: string
                         example: 123456
+                      profile:
+                          type: object 
+                          properties:
+                            id: 
+                              type: integer
+                              example: 5
+                            identity_type: 
+                              type: string
+                              example: ktp
+                            identity_number:  
+                              type: string
+                              example: 000111222333
+                            address: 
+                              type: string
+                              example: Sidoarjo
+                            user_id: 
+                              type: integer
+                              example: 5
         400: 
           description: Duplicate email
           content:
@@ -68,7 +100,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Email already used
+                    example: Email and Identity Number already used!
     get:
       summary: Get all users 
       responses:
