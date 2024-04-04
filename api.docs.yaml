@@ -1,0 +1,193 @@
+openapi: 3.0.1 ### versi API
+info: 
+  title: Banking System API ###judul api ### wajib diisi
+  description: API basic banking system
+  version: 1.0.0 ### wajib diisi
+  contact:
+    email: abiyyiaja@gmail.com
+servers:
+  - url: http://localhost:3000/api/v1
+paths:
+  /users:
+    post:
+      summary: Register new user 
+      description: Mendaftarkan user baru ke dalam database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: bagus
+                email:
+                  type: string
+                  example: bagus@gmail.com
+                password:
+                  type: string
+                  example: 123456
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    type: object
+                    properties:
+                      id: 
+                        type: integer
+                        example: 5
+                      name: 
+                        type: string
+                        example: bagus
+                      email:  
+                        type: string
+                        example: bagus@gmail.com
+                      password: 
+                        type: string
+                        example: 123456
+        400: 
+          description: Duplicate email
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Email already used
+    get:
+      summary: Get all users 
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                          example: 5
+                        name: 
+                          type: string
+                          example: bagus
+                        email:  
+                          type: string
+                          example: bagus@gmail.com
+                        password: 
+                          type: string
+                          example: 123456
+                        profile:
+                          type: object 
+                          properties:
+                            id: 
+                              type: integer
+                              example: 5
+                            identity_type: 
+                              type: string
+                              example: ktp
+                            identity_number:  
+                              type: string
+                              example: 000111222333
+                            address: 
+                              type: string
+                              example: Sidoarjo
+                            user_id: 
+                              type: integer
+                              example: 5
+  /users/{user_id}:
+    parameters:
+      - schema:
+          type: string
+        name: user_id
+        in: path
+        required: true
+    get:
+      summary: Get detail user by id
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id: 
+                          type: integer
+                          example: 5
+                        name: 
+                          type: string
+                          example: bagus
+                        email:  
+                          type: string
+                          example: bagus@gmail.com
+                        password: 
+                          type: string
+                          example: 123456
+                        profile:
+                          type: object 
+                          properties:
+                            id: 
+                              type: integer
+                              example: 5
+                            identity_type: 
+                              type: string
+                              example: ktp
+                            identity_number:  
+                              type: string
+                              example: 000111222333
+                            address: 
+                              type: string
+                              example: Sidoarjo
+                            user_id: 
+                              type: integer
+                              example: 5
+        400:
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Can't find user with id
