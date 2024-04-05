@@ -19,7 +19,7 @@ module.exports = {
       if (exist && exist_iNumber) {
         return res.status(400).json({
           status: false,
-          message: "Email and Identity Number already used!",
+          message: "Email or Identity Number already used!",
         });
       }
 

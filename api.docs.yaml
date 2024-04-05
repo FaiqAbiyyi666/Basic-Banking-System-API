@@ -9,85 +9,24 @@ servers:
   - url: http://localhost:3000/api/v1
 paths:
   /users:
-    parameters:
-        - schema:
-            type: string
-          name: search
-          in: query
     post:
       summary: Register new user 
       description: Mendaftarkan user baru ke dalam database
       requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: bagus
-                email:
-                  type: string
-                  example: bagus@gmail.com
-                password:
-                  type: string
-                  example: 123456
-                identity_type:
-                  type: string
-                  example: ktp
-                identity_number:
-                  type: string
-                  example: 111222000333
-                address:
-                  type: string
-                  example: Sidoarjo 
+        $ref: "#/components/requestBodies/Register"
       responses:
         201:
           description: Success
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: OK
-                  data:
-                    type: object
+                allOf:
+                  - $ref: "#/components/schemas/user"
+                  - type: object
                     properties:
-                      id: 
-                        type: integer
-                        example: 5
-                      name: 
-                        type: string
-                        example: bagus
-                      email:  
-                        type: string
-                        example: bagus@gmail.com
-                      password: 
+                      password:
                         type: string
                         example: 123456
-                      profile:
-                          type: object 
-                          properties:
-                            id: 
-                              type: integer
-                              example: 5
-                            identity_type: 
-                              type: string
-                              example: ktp
-                            identity_number:  
-                              type: string
-                              example: 000111222333
-                            address: 
-                              type: string
-                              example: Sidoarjo
-                            user_id: 
-                              type: integer
-                              example: 5
         400: 
           description: Duplicate email
           content:
@@ -100,9 +39,14 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Email and Identity Number already used!
+                    example: Email or Identity Number already used!
     get:
       summary: Get all users 
+      parameters:
+        - schema:
+            type: string
+          name: search
+          in: query
       responses:
         200:
           description: success
@@ -111,47 +55,22 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  status: 
                     type: boolean
                     example: true
                   message:
                     type: string
-                    example: OK
+                    example: OK 
                   data:
                     type: array
-                    items:
-                      type: object
-                      properties:
-                        id: 
-                          type: integer
-                          example: 5
-                        name: 
-                          type: string
-                          example: bagus
-                        email:  
-                          type: string
-                          example: bagus@gmail.com
-                        password: 
-                          type: string
-                          example: 123456
-                        profile:
-                          type: object 
+                    items: 
+                      allOf:
+                        - $ref: "#/components/schemas/user"
+                        - type: object
                           properties:
-                            id: 
-                              type: integer
-                              example: 5
-                            identity_type: 
+                            password:
                               type: string
-                              example: ktp
-                            identity_number:  
-                              type: string
-                              example: 000111222333
-                            address: 
-                              type: string
-                              example: Sidoarjo
-                            user_id: 
-                              type: integer
-                              example: 5
+                              example: 123456
   /users/{user_id}:
     parameters:
       - schema:
@@ -169,47 +88,20 @@ paths:
               schema:
                 type: object
                 properties:
-                  status:
+                  status: 
                     type: boolean
                     example: true
                   message:
                     type: string
-                    example: OK
+                    example: OK 
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        id: 
-                          type: integer
-                          example: 5
-                        name: 
-                          type: string
-                          example: bagus
-                        email:  
-                          type: string
-                          example: bagus@gmail.com
-                        password: 
-                          type: string
-                          example: 123456
-                        profile:
-                          type: object 
-                          properties:
-                            id: 
-                              type: integer
-                              example: 5
-                            identity_type: 
-                              type: string
-                              example: ktp
-                            identity_number:  
-                              type: string
-                              example: 000111222333
-                            address: 
-                              type: string
-                              example: Sidoarjo
-                            user_id: 
-                              type: integer
-                              example: 5
+                    allOf:
+                      - $ref: "#/components/schemas/user"
+                      - type: object
+                        properties:
+                          password:
+                            type: string
+                            example: 123456 
         400:
           description: Failed
           content:
@@ -223,3 +115,81 @@ paths:
                   message:
                     type: string
                     example: Can't find user with id
+components:
+  schemas:
+    user: 
+      title: User 
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 5
+        name: 
+          type: string
+          example: bagus
+        email:  
+          type: string
+          example: bagus@gmail.com
+        profile:
+          type: object 
+          properties:
+            id: 
+              type: integer
+              example: 5
+            identity_type: 
+              type: string
+              example: ktp
+            identity_number:  
+              type: string
+              example: 111222000333
+            address: 
+              type: string
+              example: Sidoarjo
+            user_id: 
+              type: integer
+              example: 5
+    account:
+      title: Account
+      type: object
+      properties:
+        id: 
+          type: integer
+          example: 5
+        bank_name: 
+          type: string
+          example: BCA
+        bank_account_number:  
+          type: string
+          example: 111222000333
+        balance: 
+          type: integer
+          example: 120000
+        user_id:
+          type: integer 
+          example: 5
+  requestBodies:
+    Register:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: bagus
+              email:
+                type: string
+                example: bagus@gmail.com
+              password:
+                type: string
+                example: 123456
+              identity_type:
+                type: string
+                example: ktp
+              identity_number:
+                type: string
+                example: 111222000333
+              address:
+                type: string
+                example: Sidoarjo 
+            
