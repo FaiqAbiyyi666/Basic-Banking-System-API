@@ -40,6 +40,9 @@ paths:
                   message:
                     type: string
                     example: Email or Identity Number already used!
+      security:
+        - bearerAuth: []
+      
     get:
       summary: Get all users 
       parameters:
@@ -116,6 +119,11 @@ paths:
                     type: string
                     example: Can't find user with id
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     user: 
       title: User 

@@ -1,7 +1,26 @@
 const router = require("express").Router();
 
+// Auth Middleware
+function auth(req, res, next) {
+  let { authorization } = req.headers;
+
+  if (authorization) {
+    let token = authorization.split(" ")[1];
+
+    if (token) {
+      return next();
+    }
+  }
+
+  return res.status(401).json({
+    status: false,
+    message: "You're not authorized!",
+    data: null,
+  });
+}
+
 const userController = require("../../controllers/v1/userController.js");
-router.post("/users", userController.register);
+router.post("/users", auth, userController.register);
 router.get("/users", userController.index);
 router.get("/users/:id", userController.show);
 

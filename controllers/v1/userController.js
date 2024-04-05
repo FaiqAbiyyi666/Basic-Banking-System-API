@@ -16,7 +16,7 @@ module.exports = {
         where: { identity_number },
       });
 
-      if (exist && exist_iNumber) {
+      if (exist || exist_iNumber) {
         return res.status(400).json({
           status: false,
           message: "Email or Identity Number already used!",

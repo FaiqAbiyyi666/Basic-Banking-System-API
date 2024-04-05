@@ -1,14 +1,15 @@
 ### Create User and Profile
 POST http://localhost:3000/api/v1/users
+Authorization: Bearer lalalayeyeye
 Content-Type: application/json
 
 {
-    "name":"tegar",
-    "email":"tegar@gmail.com",
+    "name":"dio",
+    "email":"dia@gmail.com",
     "password":"123456",
     "identity_type":"KTP", 
-    "identity_number":"000111222555", 
-    "address":"Bojonegoro"
+    "identity_number":"000111222999", 
+    "address":"Kediri"
 }
 
 ### Get all User 
