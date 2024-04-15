@@ -37,7 +37,7 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/accounts
 
 ### Get Account by ID
-GET http://localhost:3000/api/v1/accounts/3
+GET http://localhost:3000/api/v1/accounts/7
 
 
 
@@ -56,4 +56,4 @@ Content-Type: application/json
 GET http://localhost:3000/api/v1/transactions
 
 ### Get Transaction by ID
-GET http://localhost:3000/api/v1/transactions/7
+GET http://localhost:3000/api/v1/transactions/3

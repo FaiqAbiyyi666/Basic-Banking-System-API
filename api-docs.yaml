@@ -7,9 +7,19 @@ info:
     email: abiyyiaja@gmail.com
 servers:
   - url: http://localhost:3000/api/v1
+tags:
+  - name: Users
+    description: Everything about Users
+  - name: Accounts
+    description: Everything about Account
+  - name: Transactions
+    description: Everything about Transactions
+
 paths:
   /users:
     post:
+      tags:
+        - "Users"
       summary: Register new user 
       description: Mendaftarkan user baru ke dalam database
       requestBody:
@@ -20,13 +30,23 @@ paths:
           content:
             application/json:
               schema:
-                allOf:
-                  - $ref: "#/components/schemas/user"
-                  - type: object
-                    properties:
-                      password:
-                        type: string
-                        example: 123456
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/user"
+                      - type: object
+                        properties:
+                          password:
+                            type: string
+                            example: 123456
+
         400: 
           description: Duplicate email
           content:
@@ -44,6 +64,8 @@ paths:
         - bearerAuth: []
       
     get:
+      tags:
+        - "Users"
       summary: Get all users 
       parameters:
         - schema:
@@ -74,6 +96,7 @@ paths:
                             password:
                               type: string
                               example: 123456
+
   /users/{user_id}:
     parameters:
       - schema:
@@ -82,6 +105,8 @@ paths:
         in: path
         required: true
     get:
+      tags:
+        - "Users"
       summary: Get detail user by id
       responses:
         200:
@@ -105,6 +130,7 @@ paths:
                           password:
                             type: string
                             example: 123456 
+
         400:
           description: Failed
           content:
@@ -118,6 +144,208 @@ paths:
                   message:
                     type: string
                     example: Can't find user with id
+
+  /account:
+    post:
+      tags:
+        - "Accounts"
+      summary: Register new account 
+      description: Mendaftarkan account baru ke dalam database
+      requestBody:
+        $ref: "#/components/requestBodies/createAccount"
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/account"
+        
+        400: 
+          description: Duplicate Bank Account
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Bank Account Number already used!
+    
+    get:
+      tags:
+        - "Accounts"
+      summary: Get all bank account
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    type: array
+                    items: 
+                      allOf:
+                        - $ref: "#/components/schemas/account"
+    
+  /accounts/{account_id}:
+    parameters:
+      - schema:
+          type: integer
+        name: account_id
+        in: path
+        required: true
+    get:
+      tags:
+        - "Accounts"
+      summary: Get detail bank account by id
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/account"
+
+        400:
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Can't find account with id
+
+  /transactions:
+    post:
+      tags:
+        - "Transactions"
+      summary: Register new transaction 
+      description: Mendaftarkan transaction baru ke dalam database
+      requestBody:
+        $ref: "#/components/requestBodies/createTransaction"
+      responses:
+        201:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/transaction"
+    
+    get:
+      tags:
+        - "Transactions"
+      summary: Get all transaction
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    type: array
+                    items: 
+                      allOf:
+                        - $ref: "#/components/schemas/transaction"
+
+  /transactions/{transaction_id}:
+    parameters:
+      - schema:
+          type: integer
+        name: transaction_id
+        in: path
+        required: true
+    get:
+      tags:
+        - "Transactions"
+      summary: Get detail transaction by id
+      responses:
+        200:
+          description: success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: 
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: OK 
+                  data:
+                    allOf:
+                      - $ref: "#/components/schemas/transaction"
+
+        400:
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Can't find transaction with id
+
+
 components:
   securitySchemes:
     bearerAuth:
@@ -156,6 +384,7 @@ components:
             user_id: 
               type: integer
               example: 5
+
     account:
       title: Account
       type: object
@@ -175,6 +404,22 @@ components:
         user_id:
           type: integer 
           example: 5
+    
+    transaction:
+      properties:
+        id: 
+          type: integer
+          example: 3
+        amount:
+          type: integer
+          example: 10000
+        source_account_id:
+          type: integer
+          example: 3
+        source_destination_id:
+          type: integer
+          example: 4
+
   requestBodies:
     Register:
       content:
@@ -200,4 +445,38 @@ components:
               address:
                 type: string
                 example: Sidoarjo 
+    
+    createAccount:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bank_name:
+                type: string
+                example: BCA
+              bank_account_number:
+                type: string
+                example: 155000555
+              balance:
+                type: integer
+                example: 120000
+              user_id:
+                type: integer
+                example: 5
             
+    createTransaction:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: integer
+                example: 10000
+              source_account_id:
+                type: integer
+                example: 4
+              source_destination_id:
+                type: integer
+                example: 5
