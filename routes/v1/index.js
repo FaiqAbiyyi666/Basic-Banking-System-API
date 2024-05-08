@@ -1,37 +1,24 @@
 const router = require("express").Router();
-
-// Auth Middleware
-function auth(req, res, next) {
-  let { authorization } = req.headers;
-
-  if (authorization) {
-    let token = authorization.split(" ")[1];
-
-    if (token) {
-      return next();
-    }
-  }
-
-  return res.status(401).json({
-    status: false,
-    message: "You're not authorized!",
-    data: null,
-  });
-}
+const restrict = require("../../middlewares/auth.middlewares");
 
 const userController = require("../../controllers/v1/userController.js");
-router.post("/users", auth, userController.register);
-router.get("/users", userController.index);
-router.get("/users/:id", userController.show);
+router.post("/users", userController.store);
+router.get("/users", restrict, userController.index);
+router.get("/users/:id", restrict, userController.show);
 
 const accountController = require("../../controllers/v1/accountController.js");
-router.post("/accounts", accountController.register);
-router.get("/accounts", accountController.index);
-router.get("/accounts/:id", accountController.show);
+router.post("/accounts", restrict, accountController.register);
+router.get("/accounts", restrict, accountController.index);
+router.get("/accounts/:id", restrict, accountController.show);
 
 const transactionController = require("../../controllers/v1/transactionControllers.js");
-router.post("/transactions", transactionController.store);
-router.get("/transactions", transactionController.index);
-router.get("/transactions/:id", transactionController.show);
+router.post("/transactions", restrict, transactionController.store);
+router.get("/transactions", restrict, transactionController.index);
+router.get("/transactions/:id", restrict, transactionController.show);
+
+const authController = require("../../controllers/v1/authController.js");
+router.post("/auth/register", authController.register);
+router.post("/auth/login", authController.login);
+router.get("/auth/authenticate", restrict, authController.auth);
 
 module.exports = router;

@@ -1,8 +1,11 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const { JWT_SECRET_KEY } = process.env;
 
 module.exports = {
-  store: async (req, res, next) => {
+  register: async (req, res, next) => {
     try {
       let { name, email, password, identity_type, identity_number, address } =
         req.body;
@@ -47,56 +50,50 @@ module.exports = {
       next(err);
     }
   },
-  // Untuk menampilkan semua user
-  index: async (req, res, next) => {
+
+  login: async (req, res, next) => {
     try {
-      // /users?search=bagus
-      let { search } = req.query;
-
-      let users = await prisma.user.findMany({
-        where: {
-          name: { contains: search },
-        },
-        include: {
-          profile: true,
-        },
-      });
-
-      res.status(200).json({
-        status: true,
-        message: "OK",
-        data: users,
-      });
-    } catch (err) {
-      next(err);
-    }
-  },
-
-  // Untuk menampilkan user berdasarkan id
-  show: async (req, res, next) => {
-    try {
-      let id = Number(req.params.id);
-
-      let user = await prisma.user.findUnique({
-        where: { id },
-        include: { profile: true },
-      });
-
+      let { email, password } = req.body;
+      let user = await prisma.user.findFirst({ where: { email } });
       if (!user) {
         return res.status(400).json({
           status: false,
-          message: "Can't find user with id " + id,
+          message: "invalid email or password",
           data: null,
         });
       }
 
-      res.status(200).json({
+      let isPasswordCorrect = await bcrypt.compare(password, user.password);
+      if (!isPasswordCorrect) {
+        return res.status(400).json({
+          status: false,
+          message: "invalid email or password",
+          data: null,
+        });
+      }
+
+      delete user.password;
+      let token = jwt.sign(user, JWT_SECRET_KEY);
+
+      return res.status(201).json({
         status: true,
         message: "OK",
-        data: user,
+        data: { ...user, token },
       });
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  auth: async (req, res, next) => {
+    try {
+      return res.status(200).json({
+        status: true,
+        message: "OK",
+        data: req.user,
+      });
+    } catch (error) {
+      next(error);
     }
   },
 };

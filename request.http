@@ -1,22 +1,45 @@
-### Create User and Profile
-POST http://localhost:3000/api/v1/users
-Authorization: Bearer lalalayeyeye
+### Register
+POST http://localhost:3000/api/v1/auth/register
 Content-Type: application/json
 
 {
-    "name":"dio",
-    "email":"dia@gmail.com",
+    "name":"anjay",
+    "email":"anjay@gmail.com",
     "password":"123456",
     "identity_type":"KTP", 
-    "identity_number":"000111222999", 
-    "address":"Kediri"
+    "identity_number":"000111444999", 
+    "address":"Malang"
+}
+
+### Create User and Profile
+POST http://localhost:3000/api/v1/users
+Content-Type: application/json
+
+{
+    "name":"tomo",
+    "email":"tomo@gmail.com",
+    "password":"123456",
+    "identity_type":"KTP", 
+    "identity_number":"000111333999", 
+    "address":"Jepang"
+}
+
+### login
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+    "email": "anjay@gmail.com",
+    "password": "123456"
 }
 
 ### Get all User 
-GET http://localhost:3000/api/v1/users?search=
+GET http://localhost:3000/api/v1/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 
 ### Get User by ID 
 GET http://localhost:3000/api/v1/users/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 
 
 
@@ -24,6 +47,7 @@ GET http://localhost:3000/api/v1/users/4
 
 ### Create Account
 POST http://localhost:3000/api/v1/accounts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 Content-Type: application/json
 
 {
@@ -35,15 +59,18 @@ Content-Type: application/json
 
 ### Get all Account
 GET http://localhost:3000/api/v1/accounts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 
 ### Get Account by ID
 GET http://localhost:3000/api/v1/accounts/7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 
 
 
 
 ### Create Transaction
 POST http://localhost:3000/api/v1/transactions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 Content-Type: application/json
 
 {
@@ -54,6 +81,8 @@ Content-Type: application/json
 
 ### Get all Transaction
 GET http://localhost:3000/api/v1/transactions
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
 
 ### Get Transaction by ID
 GET http://localhost:3000/api/v1/transactions/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsIm5hbWUiOiJhbmpheSIsImVtYWlsIjoiYW5qYXlAZ21haWwuY29tIiwiaWF0IjoxNzE1MTM2MjQ2fQ.iXZomPgaYiovQ6qw-yz9rJ5mH1nj4oEfRkjbIo46WrU
